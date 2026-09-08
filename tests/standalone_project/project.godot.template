@@ -1,0 +1,16 @@
+; Minimal clean-project fixture for validating the packaged editor plugin.
+
+config_version=5
+
+[application]
+
+config/name="Matinee Standalone Package Test"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/matinee/plugin.cfg")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

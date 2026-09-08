@@ -1,0 +1,344 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://addons/matinee/director_dock.gd" id="1_dock"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/sequence_summary.gd" id="2_summary"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/toolbar.gd" id="3_toolbar"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/action_tree.gd" id="4_tree"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/status_bar.gd" id="5_status"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/inspector_panel.gd" id="6_inspector"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/timeline.gd" id="7_timeline"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/timeline_canvas.gd" id="8_timeline_canvas"]
+[ext_resource type="Script" path="res://addons/matinee/widgets/runtime_preview.gd" id="9_preview"]
+[ext_resource type="Shader" path="res://addons/matinee/preview/shaders/film_burn.gdshader" id="10_burn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_scene_burn"]
+shader = ExtResource("10_burn")
+
+[node name="DirectorDock" type="VBoxContainer"]
+custom_minimum_size = Vector2(520, 720)
+size_flags_vertical = 3
+script = ExtResource("1_dock")
+
+[node name="Title" type="Label" parent="."]
+theme_override_font_sizes/font_size = 18
+text = "DIRECTOR EDITOR"
+
+[node name="Separator" type="HSeparator" parent="."]
+
+[node name="SequenceSummary" type="VBoxContainer" parent="."]
+script = ExtResource("2_summary")
+
+[node name="SequenceName" type="Label" parent="SequenceSummary"]
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+text = "Select a MatineeSequence resource"
+
+[node name="SummaryGrid" type="GridContainer" parent="SequenceSummary"]
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="DurationCaption" type="Label" parent="SequenceSummary/SummaryGrid"]
+text = "Length:"
+
+[node name="DurationValue" type="Label" parent="SequenceSummary/SummaryGrid"]
+size_flags_horizontal = 3
+text = "—"
+
+[node name="ActionsCaption" type="Label" parent="SequenceSummary/SummaryGrid"]
+text = "Actions:"
+
+[node name="ActionsValue" type="Label" parent="SequenceSummary/SummaryGrid"]
+size_flags_horizontal = 3
+text = "—"
+
+[node name="TimingCaption" type="Label" parent="SequenceSummary/SummaryGrid"]
+text = "Timing:"
+
+[node name="TimingValue" type="Label" parent="SequenceSummary/SummaryGrid"]
+size_flags_horizontal = 3
+text = "—"
+
+[node name="Toolbar" type="HBoxContainer" parent="."]
+theme_override_constants/separation = 4
+script = ExtResource("3_toolbar")
+
+[node name="AddButton" type="Button" parent="Toolbar"]
+tooltip_text = "Add a new action."
+text = "+ Add"
+
+[node name="AddTrackButton" type="Button" parent="Toolbar"]
+tooltip_text = "Add a new timeline track."
+text = "+ Track"
+
+[node name="DuplicateButton" type="Button" parent="Toolbar"]
+tooltip_text = "Duplicate the selected action."
+text = "Duplicate"
+
+[node name="DeleteButton" type="Button" parent="Toolbar"]
+tooltip_text = "Delete the selected action."
+text = "Delete"
+
+[node name="MoveUpButton" type="Button" parent="Toolbar"]
+tooltip_text = "Move the selected action up."
+text = "▲"
+
+[node name="MoveDownButton" type="Button" parent="Toolbar"]
+tooltip_text = "Move the selected action down."
+text = "▼"
+
+[node name="TrackMenuButton" type="MenuButton" parent="Toolbar"]
+tooltip_text = "Rename or change the selected track state."
+text = "Track"
+disabled = true
+
+[node name="PlaybackSeparator" type="VSeparator" parent="Toolbar"]
+
+[node name="RewindButton" type="Button" parent="Toolbar"]
+tooltip_text = "Rewind to the beginning (Home)."
+text = "|◀"
+
+[node name="PlayPauseButton" type="Button" parent="Toolbar"]
+custom_minimum_size = Vector2(38, 0)
+tooltip_text = "Play the sequence (Space)."
+text = "▶"
+
+[node name="StopButton" type="Button" parent="Toolbar"]
+tooltip_text = "Stop playback and rewind (Escape)."
+text = "■"
+
+[node name="SpeedOption" type="OptionButton" parent="Toolbar"]
+custom_minimum_size = Vector2(68, 0)
+tooltip_text = "Playback speed."
+
+[node name="LoopButton" type="CheckButton" parent="Toolbar"]
+tooltip_text = "Loop playback."
+text = "Loop"
+
+[node name="PreviewButton" type="CheckButton" parent="Toolbar"]
+tooltip_text = "Preview supported cinematic actions in the editor."
+text = "Preview"
+
+[node name="ValidateButton" type="Button" parent="Toolbar"]
+tooltip_text = "Check this sequence for missing or invalid settings."
+text = "Validate"
+
+[node name="InspectSequenceButton" type="Button" parent="Toolbar"]
+size_flags_horizontal = 3
+tooltip_text = "Inspect the sequence resource."
+text = "Sequence"
+
+[node name="AddMenu" type="PopupMenu" parent="."]
+
+[node name="ActionsHeading" type="Label" parent="."]
+theme_override_font_sizes/font_size = 14
+text = "ACTIONS"
+
+[node name="ActionTree" type="Tree" parent="."]
+custom_minimum_size = Vector2(0, 220)
+size_flags_vertical = 3
+columns = 3
+column_titles_visible = true
+hide_root = true
+select_mode = 1
+drop_mode_flags = 2
+script = ExtResource("4_tree")
+
+[node name="TimelineHeading" type="Label" parent="."]
+theme_override_font_sizes/font_size = 14
+text = "TIMELINE"
+
+[node name="Timeline" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 220)
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+script = ExtResource("7_timeline")
+
+[node name="TimelineToolbar" type="HBoxContainer" parent="Timeline"]
+theme_override_constants/separation = 4
+
+[node name="ZoomOutButton" type="Button" parent="Timeline/TimelineToolbar"]
+tooltip_text = "Zoom out on the timeline."
+text = "−"
+
+[node name="ZoomLabel" type="Label" parent="Timeline/TimelineToolbar"]
+custom_minimum_size = Vector2(68, 0)
+text = "48 px/s"
+vertical_alignment = 1
+
+[node name="ZoomInButton" type="Button" parent="Timeline/TimelineToolbar"]
+tooltip_text = "Zoom in on the timeline."
+text = "+"
+
+[node name="FitButton" type="Button" parent="Timeline/TimelineToolbar"]
+tooltip_text = "Fit the full sequence into the visible timeline."
+text = "Fit"
+
+[node name="DebugButton" type="CheckButton" parent="Timeline/TimelineToolbar"]
+tooltip_text = "Show track and clip layout diagnostics."
+text = "Debug"
+
+[node name="TrackNamesButton" type="CheckButton" parent="Timeline/TimelineToolbar"]
+tooltip_text = "Expand the track name column to show long names."
+text = "Wide Names"
+
+[node name="HintLabel" type="Label" parent="Timeline/TimelineToolbar"]
+size_flags_horizontal = 3
+text = "Drag clips to move · Ctrl+wheel zoom · Middle-drag pan"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Timeline"]
+custom_minimum_size = Vector2(0, 180)
+size_flags_vertical = 3
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 1
+
+[node name="TimelineCanvas" type="Control" parent="Timeline/ScrollContainer"]
+custom_minimum_size = Vector2(420, 180)
+layout_mode = 2
+mouse_filter = 1
+script = ExtResource("8_timeline_canvas")
+
+[node name="RuntimePreview" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(0, 180)
+size_flags_vertical = 3
+script = ExtResource("9_preview")
+
+[node name="PreviewRoot" type="MarginContainer" parent="RuntimePreview"]
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Background" type="ColorRect" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.035, 0.035, 0.04, 1)
+
+[node name="PresentationTint" type="ColorRect" parent="RuntimePreview/PreviewRoot"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.42, 0.31, 0.12, 0.08)
+
+[node name="FadeOverlay" type="ColorRect" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="EmptyLabel" type="Label" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+text = "Preview is idle — play a sequence to see cinematic states"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cards" type="VBoxContainer" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+alignment = 1
+
+[node name="Dialogues" type="VBoxContainer" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 2
+
+[node name="SceneFadeOverlay" type="ColorRect" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="SceneBurnOverlay" type="ColorRect" parent="RuntimePreview/PreviewRoot"]
+visible = false
+material = SubResource("ShaderMaterial_scene_burn")
+layout_mode = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="PresentationStatus" type="Label" parent="RuntimePreview/PreviewRoot"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.76, 0.72, 0.62, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "FILM · Movie Mode\nClean"
+horizontal_alignment = 2
+vertical_alignment = 0
+
+[node name="SceneTransitionStatus" type="Label" parent="RuntimePreview/PreviewRoot"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.72, 0.36, 0.95)
+theme_override_font_sizes/font_size = 11
+text = "FADE OUT · Scene"
+horizontal_alignment = 0
+vertical_alignment = 0
+
+[node name="CameraStatus" type="Label" parent="RuntimePreview/PreviewRoot"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.58, 0.84, 1, 0.96)
+theme_override_font_sizes/font_size = 11
+text = "CAMERA - Target\nBlend\nDiagnostic preview only"
+horizontal_alignment = 0
+vertical_alignment = 0
+autowrap_mode = 2
+
+[node name="PreviewControls" type="VBoxContainer" parent="RuntimePreview/PreviewRoot"]
+layout_mode = 2
+mouse_filter = 1
+alignment = 2
+
+[node name="Options" type="HBoxContainer" parent="RuntimePreview/PreviewRoot/PreviewControls"]
+layout_mode = 2
+alignment = 2
+
+[node name="MuteAudio" type="CheckButton" parent="RuntimePreview/PreviewRoot/PreviewControls/Options"]
+layout_mode = 2
+tooltip_text = "Mute editor-owned preview audio."
+text = "Mute Audio"
+
+[node name="ScrubAudio" type="CheckButton" parent="RuntimePreview/PreviewRoot/PreviewControls/Options"]
+layout_mode = 2
+tooltip_text = "Allow one-shot audio when forward scrubbing crosses its start time."
+text = "Audio While Scrubbing"
+
+[node name="Diagnostics" type="Label" parent="RuntimePreview/PreviewRoot/PreviewControls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.76, 0.76, 0.72, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "0 active · 0 previewed"
+horizontal_alignment = 2
+
+[node name="StatusBar" type="Label" parent="."]
+autowrap_mode = 2
+script = ExtResource("5_status")
+
+[node name="InspectorHeading" type="Label" parent="."]
+theme_override_font_sizes/font_size = 14
+text = "SELECTED RESOURCE"
+
+[node name="InspectorPanel" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 220)
+size_flags_vertical = 3
+script = ExtResource("6_inspector")
+
+[node name="ValidationDialog" type="AcceptDialog" parent="."]
+title = "Matinee Sequence Validation"
+min_size = Vector2i(620, 420)
+
+[node name="ValidationResults" type="RichTextLabel" parent="ValidationDialog"]
+custom_minimum_size = Vector2(580, 340)
+bbcode_enabled = true
+fit_content = false
+
+[node name="RenameTrackDialog" type="ConfirmationDialog" parent="."]
+title = "Rename Track"
+min_size = Vector2i(360, 110)
+
+[node name="TrackNameEdit" type="LineEdit" parent="RenameTrackDialog"]
+custom_minimum_size = Vector2(320, 0)
+placeholder_text = "Track name"

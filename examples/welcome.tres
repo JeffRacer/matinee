@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MatineeSequence" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://addons/matinee/core/timeline/director_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://addons/matinee/core/timeline/director_track.gd" id="2"]
+[ext_resource type="Script" path="res://addons/matinee/core/timeline/director_timeline_action.gd" id="3"]
+[ext_resource type="Script" path="res://addons/matinee/core/actions/title_card_action.gd" id="4"]
+
+[sub_resource type="Resource" id="Title"]
+script = ExtResource("4")
+main_text = "MATINEE"
+subtitle = "Your next scene starts here."
+hold_duration = 2.0
+fade_duration = 0.5
+
+[sub_resource type="Resource" id="Clip"]
+script = ExtResource("3")
+action = SubResource("Title")
+start_time = 0.0
+duration = 3.0
+
+[sub_resource type="Resource" id="Track"]
+script = ExtResource("2")
+track_name = "Titles"
+actions = Array[ExtResource("3")]([SubResource("Clip")])
+
+[resource]
+script = ExtResource("1")
+sequence_name = "Welcome to Matinee"
+tracks = Array[ExtResource("2")]([SubResource("Track")])
